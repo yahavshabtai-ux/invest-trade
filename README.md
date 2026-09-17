@@ -1,32 +1,28 @@
-# DarkTrade Demo
 
-אתר סימולטור טריידינג שמוכן ל-GitHub Pages.
+# PaperTrade Pro
 
-## הפעלה מקומית
-פשוט לפתוח את `index.html`.
+אתר דמו למסחר מהיר בסגנון ויזואלי שמזכיר TradingView Paper Trading.
+
+## מה יש בפנים
+- עיצוב כהה ומסודר
+- Watchlist בצד
+- Chart גדול עם candlesticks
+- Order Ticket
+- Buy / Sell
+- בחירת משך עסקה: שניות / דקות / שעות / ימים
+- יתרת דמו
+- היסטוריית עסקאות
 
 ## העלאה ל-GitHub Pages
-
-1. פתח GitHub וצור Repository חדש, למשל:
-   `darktrade-demo`
-
-2. העלה אליו את כל הקבצים:
-   - `index.html`
-   - `style.css`
-   - `script.js`
-
-3. היכנס:
-   `Settings` → `Pages`
-
-4. תחת `Build and deployment` בחר:
-   - Source: `Deploy from a branch`
-   - Branch: `main`
-   - Folder: `/ (root)`
-
-5. שמור.
-
-אחרי הפרסום תקבל כתובת בסגנון:
-`https://USERNAME.github.io/darktrade-demo/`
+1. מעלים את כל הקבצים לריפו
+2. נכנסים ל-Settings
+3. לוחצים Pages
+4. בוחרים:
+   - Deploy from a branch
+   - main
+   - /(root)
+5. Save
 
 ## חשוב
-זהו סימולטור בלבד. אין חיבור לכסף אמיתי, ברוקר או בורסה.
+זה סימולטור דמו בלבד.
+אין כסף אמיתי, אין ברוקר, ואין חיבור למסחר אמיתי.

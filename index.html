@@ -3,158 +3,189 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="theme-color" content="#07090d" />
-  <title>DarkTrade Demo</title>
+  <title>PaperTrade Pro</title>
+  <meta name="theme-color" content="#0a0f19" />
   <link rel="stylesheet" href="style.css" />
-  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.7/dist/chart.umd.min.js"></script>
+  <script src="https://unpkg.com/lightweight-charts/dist/lightweight-charts.standalone.production.js"></script>
 </head>
 <body>
-  <header class="topbar">
-    <div class="brand-wrap">
-      <div class="brand">Dark<span>Trade</span></div>
-      <span class="demo-badge">DEMO</span>
-    </div>
+  <div class="app-shell">
+    <header class="topbar">
+      <div class="topbar-left">
+        <div class="brand">Paper<span>Trade</span> <em>Demo</em></div>
+        <div class="symbol-chip">
+          <strong id="activeSymbolName">BTCUSD</strong>
+          <span id="activeSymbolDesc">Bitcoin / US Dollar</span>
+        </div>
+      </div>
 
-    <div class="balance-card">
-      <span>יתרה וירטואלית</span>
-      <strong id="balance">$10,000.00</strong>
-    </div>
-  </header>
+      <div class="topbar-center">
+        <button class="tf-btn active" data-timeframe="1m">1m</button>
+        <button class="tf-btn" data-timeframe="5m">5m</button>
+        <button class="tf-btn" data-timeframe="15m">15m</button>
+        <button class="tf-btn" data-timeframe="1h">1h</button>
+        <button class="tf-btn" data-timeframe="4h">4h</button>
+        <button class="tf-btn" data-timeframe="1d">1d</button>
+      </div>
 
-  <div class="layout">
-    <main class="main-area">
-      <section class="market-header">
-        <div class="asset-info">
-          <div class="coin-icon">₿</div>
-          <div>
-            <h1>Bitcoin / USD</h1>
-            <p>BTC/USD · סימולציה</p>
+      <div class="topbar-right">
+        <div class="paper-balance">
+          <span>יתרת דמו</span>
+          <strong id="balanceValue">$10,000.00</strong>
+        </div>
+        <button id="fullscreenBtn" class="icon-btn">⛶</button>
+      </div>
+    </header>
+
+    <main class="workspace">
+      <aside class="watchlist-panel">
+        <div class="panel-head">
+          <h3>Watchlist</h3>
+          <span>דמו</span>
+        </div>
+
+        <div class="watchlist" id="watchlist"></div>
+
+        <div class="watchlist-note">
+          סימולטור השראתי בסגנון Paper Trading בלבד.
+        </div>
+      </aside>
+
+      <section class="chart-panel">
+        <div class="chart-head">
+          <div class="chart-symbol">
+            <strong id="chartSymbol">BTCUSD</strong>
+            <span id="chartSymbolFull">Bitcoin / US Dollar</span>
+          </div>
+
+          <div class="chart-stats">
+            <div class="stat-pill">
+              <span>Last</span>
+              <strong id="lastPrice">$0.00</strong>
+            </div>
+            <div class="stat-pill">
+              <span>Change</span>
+              <strong id="lastChange" class="up">+0.00%</strong>
+            </div>
+            <div class="stat-pill">
+              <span>High</span>
+              <strong id="sessionHigh">$0.00</strong>
+            </div>
+            <div class="stat-pill">
+              <span>Low</span>
+              <strong id="sessionLow">$0.00</strong>
+            </div>
           </div>
         </div>
 
-        <div class="market-price">
-          <strong id="price">$64,250.00</strong>
-          <span id="change" class="positive">+0.00%</span>
+        <div class="chart-toolbar">
+          <div class="chart-toolbar-group">
+            <button class="toolbar-btn active">Candles</button>
+            <button class="toolbar-btn">Indicators</button>
+            <button class="toolbar-btn">Compare</button>
+          </div>
+
+          <div class="chart-toolbar-group">
+            <button class="toolbar-btn">Paper</button>
+            <button class="toolbar-btn">Demo Mode</button>
+          </div>
+        </div>
+
+        <div class="chart-wrap">
+          <div id="tvChart"></div>
+        </div>
+
+        <div class="positions-strip">
+          <div class="positions-header">
+            <strong>Open / Closed Trades</strong>
+            <button id="clearHistoryBtn">נקה היסטוריה</button>
+          </div>
+          <div id="positionsList" class="positions-list">
+            <div class="empty-positions">עוד אין עסקאות</div>
+          </div>
         </div>
       </section>
 
-      <section class="toolbar">
-        <div class="toolbar-group">
-          <span>מהירות גרף</span>
-          <button class="chart-speed active" data-speed="400">מהיר</button>
-          <button class="chart-speed" data-speed="900">רגיל</button>
-          <button class="chart-speed" data-speed="1700">איטי</button>
+      <aside class="trade-panel">
+        <div class="trade-head">
+          <h3>Order Ticket</h3>
+          <span>Paper Trading</span>
         </div>
 
-        <button id="fullscreenBtn" class="ghost-btn">⛶ מסך מלא</button>
-      </section>
+        <div class="trade-side-price">
+          <div class="price-box buy-box">
+            <label>BUY</label>
+            <strong id="buyQuote">$0.00</strong>
+          </div>
+          <div class="price-box sell-box">
+            <label>SELL</label>
+            <strong id="sellQuote">$0.00</strong>
+          </div>
+        </div>
 
-      <section class="chart-card">
-        <canvas id="priceChart"></canvas>
-      </section>
+        <label class="field-label">נכס</label>
+        <select id="symbolSelect" class="field-input"></select>
 
-      <section class="bottom-stats">
-        <div class="stat-box">
-          <span>מחיר פתיחה</span>
-          <strong id="sessionOpen">$64,250.00</strong>
+        <label class="field-label">סכום וירטואלי</label>
+        <div class="money-field">
+          <span>$</span>
+          <input id="amountInput" type="number" min="1" value="100" />
         </div>
-        <div class="stat-box">
-          <span>גבוה</span>
-          <strong id="sessionHigh">$64,250.00</strong>
+
+        <label class="field-label">משך עסקה</label>
+        <div class="duration-grid">
+          <input id="durationValue" type="number" min="1" value="10" class="field-input" />
+          <select id="durationUnit" class="field-input">
+            <option value="seconds">שניות</option>
+            <option value="minutes">דקות</option>
+            <option value="hours">שעות</option>
+            <option value="days">ימים</option>
+          </select>
         </div>
-        <div class="stat-box">
-          <span>נמוך</span>
-          <strong id="sessionLow">$64,250.00</strong>
+
+        <div class="quick-grid">
+          <button class="quick-btn active" data-value="10" data-unit="seconds">10s</button>
+          <button class="quick-btn" data-value="30" data-unit="seconds">30s</button>
+          <button class="quick-btn" data-value="1" data-unit="minutes">1m</button>
+          <button class="quick-btn" data-value="5" data-unit="minutes">5m</button>
+          <button class="quick-btn" data-value="1" data-unit="hours">1h</button>
+          <button class="quick-btn" data-value="1" data-unit="days">1d</button>
         </div>
-        <div class="stat-box">
-          <span>עסקאות</span>
-          <strong id="tradeCount">0</strong>
+
+        <div class="order-buttons">
+          <button id="buyBtn" class="action-btn buy-action">Buy / Long</button>
+          <button id="sellBtn" class="action-btn sell-action">Sell / Short</button>
         </div>
-      </section>
+
+        <div id="activeTradeCard" class="active-trade-card hidden">
+          <div class="active-trade-title">
+            <strong>עסקה פעילה</strong>
+            <span id="tradeDirectionTag">BUY</span>
+          </div>
+
+          <div class="trade-row">
+            <span>נכס</span>
+            <strong id="activeTradeSymbol">BTCUSD</strong>
+          </div>
+          <div class="trade-row">
+            <span>כניסה</span>
+            <strong id="entryPriceValue">$0.00</strong>
+          </div>
+          <div class="trade-row">
+            <span>זמן נותר</span>
+            <strong id="countdownValue">00:10</strong>
+          </div>
+          <div class="trade-row pnl-row">
+            <span>P/L</span>
+            <strong id="livePnlValue">$0.00</strong>
+          </div>
+        </div>
+
+        <div class="trade-warning">
+          זה דמו בלבד — אין כסף אמיתי, אין הפקדות, אין משיכות.
+        </div>
+      </aside>
     </main>
-
-    <aside class="trade-panel">
-      <div class="panel-title">
-        <div>
-          <h2>עסקה חדשה</h2>
-          <p>סימולטור בלבד</p>
-        </div>
-      </div>
-
-      <label class="field-label" for="amount">סכום וירטואלי</label>
-      <div class="money-input">
-        <span>$</span>
-        <input id="amount" type="number" min="1" step="1" value="100" />
-      </div>
-
-      <label class="field-label">משך העסקה</label>
-      <div class="duration-row">
-        <input id="duration" type="number" min="1" value="10" />
-        <select id="durationType">
-          <option value="seconds">שניות</option>
-          <option value="minutes">דקות</option>
-          <option value="hours">שעות</option>
-          <option value="days">ימים</option>
-        </select>
-      </div>
-
-      <div class="quick-times">
-        <button data-value="5" data-unit="seconds">5s</button>
-        <button data-value="10" data-unit="seconds" class="selected">10s</button>
-        <button data-value="30" data-unit="seconds">30s</button>
-        <button data-value="1" data-unit="minutes">1m</button>
-        <button data-value="5" data-unit="minutes">5m</button>
-        <button data-value="1" data-unit="hours">1h</button>
-      </div>
-
-      <div class="trade-actions">
-        <button id="buyBtn" class="trade-btn buy-btn">
-          <span>▲</span>
-          <div><strong>BUY</strong><small>מחיר יעלה</small></div>
-        </button>
-
-        <button id="sellBtn" class="trade-btn sell-btn">
-          <span>▼</span>
-          <div><strong>SELL</strong><small>מחיר ירד</small></div>
-        </button>
-      </div>
-
-      <section id="activeTrade" class="active-trade hidden">
-        <div class="active-head">
-          <span>עסקה פתוחה</span>
-          <strong id="directionText">BUY</strong>
-        </div>
-
-        <div class="trade-detail">
-          <span>כניסה</span>
-          <strong id="entryPrice">-</strong>
-        </div>
-
-        <div class="trade-detail">
-          <span>זמן שנותר</span>
-          <strong id="timer">00:10</strong>
-        </div>
-
-        <div class="pnl-wrap">
-          <span>P/L</span>
-          <strong id="pnl">$0.00</strong>
-        </div>
-      </section>
-
-      <section class="history-section">
-        <div class="history-head">
-          <h3>היסטוריית עסקאות</h3>
-          <button id="resetBtn">איפוס</button>
-        </div>
-        <div id="history" class="history-list">
-          <div class="empty-history">עוד אין עסקאות</div>
-        </div>
-      </section>
-
-      <p class="warning">
-        ⚠️ זהו סימולטור בלבד. אין הפקדות, משיכות או מסחר בכסף אמיתי. המחירים נוצרים באופן מלאכותי לתרגול.
-      </p>
-    </aside>
   </div>
 
   <script src="script.js"></script>
